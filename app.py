@@ -1,24 +1,33 @@
-# Inserir cada célula de cada linha em um campo do sistema
-import openpyxl
-import pyautogui
+# instale o PySimpleGUI antes de rodar este arquivo:
+# pip install PySimpleGUI 
+# para mac/linux
+# pip3 install PySimpleGUI
+import PySimpleGUI as sg
 
-workbook = openpyxl.load_workbook('vendas_de_produtos.xlsx')
-vendas_sheet = workbook['vendas']
+sg.theme('Reddit')
 
-for linha in vendas_sheet.iter_rows(min_row=2):
-    # nome
-    pyautogui.click(1808,452,duration=1.5)
-    pyautogui.write(linha[0].value)
-    # produto
-    pyautogui.click(1815,476,duration=1.5)
-    pyautogui.write(linha[1].value)
-    # quantidade
-    pyautogui.click(1813,497,duration=1.5)
-    pyautogui.write(str(linha[2].value))
-    # categoria
-    pyautogui.click(1883,532,duration=1.5)
-    pyautogui.write(linha[3].value)
-    pyautogui.click(1752,549,duration=1.5)
-    pyautogui.click(1256,581,duration=1.5)
-    
-    
+product_categories = ["Eletrônicos", "Móveis", "Roupas", "Brinquedos", "Comida", "Bebidas", 
+                      "Cosméticos", "Livros", "Esportes", "Jardinagem"]
+
+layout = [
+    [sg.Text('Cliente',size=(6,0)),sg.Input(key='1',size=(20,0))],
+    [sg.Text('Produto',size=(6,0)),sg.Input(size=(20,0),key='2')],
+    [sg.Text('Quantidade'),sg.Input(key='3',size=(3,0))],
+    [sg.Text('Categoria do Produto'), sg.Combo(product_categories, key='4')],
+    [sg.Button('Salvar')]
+
+]
+
+window = sg.Window('Cadastro de Produtos',layout)
+
+while True:
+    event, values = window.read()
+
+    if event == sg.WIN_CLOSED:
+        break
+    elif event == 'Salvar':
+        sg.popup('Produto Cadastrado')
+        window['1'].update('')
+        window['2'].update('')
+        window['3'].update('')
+        window['4'].update('')
